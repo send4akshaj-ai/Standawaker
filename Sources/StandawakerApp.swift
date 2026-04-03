@@ -11,6 +11,7 @@ struct StandawakerApp: App {
                 .environmentObject(wakeManager)
                 .preferredColorScheme(.dark)
                 .statusBarHidden(true)
+                .persistentSystemOverlays(.hidden)
                 .onAppear {
                     wakeManager.applyCurrentSetting()
                 }

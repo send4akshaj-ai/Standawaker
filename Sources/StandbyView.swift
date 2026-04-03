@@ -43,23 +43,29 @@ struct StandbyView: View {
                 Color.black
                     .ignoresSafeArea()
 
-                Text(clockString(from: now))
-                    .font(standbyClockFont(size: min(geo.size.width * 0.47, geo.size.height * 0.83)))
-                    .tracking(-4)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.45)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [palette.top, palette.bottom],
-                            startPoint: .top,
-                            endPoint: .bottom
+                HStack(spacing: 0) {
+                    Text(clockString(from: now))
+                        .font(standbyClockFont(size: min(geo.size.width * 0.44, geo.size.height * 0.82)))
+                        .tracking(-3)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.50)
+                        .monospacedDigit()
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [palette.top, palette.bottom],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
                         )
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .padding(.leading, geo.size.width * 0.15)
-                    .padding(.top, geo.size.height * 0.08)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 
-                VStack(alignment: .leading, spacing: 2) {
+                    Color.clear
+                        .frame(width: geo.size.width * 0.22)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .offset(x: -geo.size.width * 0.05, y: geo.size.height * 0.005)
+
+                VStack(alignment: .leading, spacing: geo.size.height * 0.005) {
                     (
                         Text(weekdayString(from: now) + " ")
                             .foregroundColor(palette.top)
@@ -67,15 +73,15 @@ struct StandbyView: View {
                         Text(dayNumber(from: now))
                             .foregroundColor(.white)
                     )
-                    .font(.system(size: max(26, geo.size.width * 0.045), weight: .bold, design: .rounded))
+                    .font(.system(size: max(24, geo.size.width * 0.037), weight: .bold, design: .rounded))
 
                     Text(weatherManager.temperatureText)
-                        .font(.system(size: max(24, geo.size.width * 0.043), weight: .medium, design: .rounded))
+                        .font(.system(size: max(24, geo.size.width * 0.036), weight: .medium, design: .rounded))
                         .foregroundColor(.white)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .padding(.trailing, geo.size.width * 0.08)
-                .padding(.top, geo.size.height * 0.14)
+                .padding(.trailing, geo.size.width * 0.055)
+                .padding(.top, geo.size.height * 0.13)
             }
             .contentShape(Rectangle())
             .onTapGesture(count: 2) {
@@ -100,17 +106,11 @@ struct StandbyView: View {
     }
 
     private func standbyClockFont(size: CGFloat) -> Font {
-        let candidateNames = [
-            "SFProRounded-Heavy",
-            "SFProRounded-Bold",
-            "SF Pro Rounded"
-        ]
-        for name in candidateNames {
-            if let font = UIFont(name: name, size: size) {
-                return Font(font)
-            }
+        let base = UIFont.systemFont(ofSize: size, weight: .bold)
+        if let roundedDescriptor = base.fontDescriptor.withDesign(.rounded) {
+            return Font(UIFont(descriptor: roundedDescriptor, size: size))
         }
-        return .system(size: size, weight: .black, design: .rounded)
+        return .system(size: size, weight: .bold, design: .rounded)
     }
 
     private func clockString(from date: Date) -> String {
