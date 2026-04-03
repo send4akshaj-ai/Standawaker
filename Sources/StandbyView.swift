@@ -49,22 +49,14 @@ struct StandbyView: View {
                     .ignoresSafeArea()
 
                 HStack(alignment: .top, spacing: geo.size.width * 0.01) {
-                    Text(displayedTime)
-                        .id(displayedTime)
-                        .font(standbyClockFont(size: min(geo.size.width * 0.41, geo.size.height * 0.80)))
-                        .tracking(-1.2)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.50)
-                        .monospacedDigit()
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [palette.top, palette.bottom],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                        .transition(.opacity)
-                        .animation(.easeInOut(duration: 0.20), value: displayedTime)
+                    StandbyClockText(
+                        text: displayedTime,
+                        topColor: palette.top,
+                        bottomColor: palette.bottom
+                    )
+                    .id(displayedTime)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.20), value: displayedTime)
                         .frame(width: geo.size.width * 0.77, alignment: .leading)
 
                     VStack(alignment: .leading, spacing: geo.size.height * 0.005) {
@@ -117,20 +109,6 @@ struct StandbyView: View {
         }
     }
 
-    private func standbyClockFont(size: CGFloat) -> Font {
-        let candidates = [
-            "SFProDisplay-Heavy",
-            "SFProDisplay-Bold",
-            "SF Pro Display"
-        ]
-        for name in candidates {
-            if let font = UIFont(name: name, size: size) {
-                return Font(font)
-            }
-        }
-        return .system(size: size, weight: .heavy, design: .default)
-    }
-
     private func clockString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = .current
@@ -157,4 +135,142 @@ struct StandbyView: View {
     StandbyView()
         .environmentObject(WakeManager())
         .preferredColorScheme(.dark)
+}
+
+private struct StandbyClockText: View {
+    let text: String
+    let topColor: Color
+    let bottomColor: Color
+
+    var body: some View {
+        GeometryReader { geo in
+            let glyphs = Array(text)
+            let colonCount = glyphs.filter { $0 == ":" }.count
+            let digitCount = max(1, glyphs.count - colonCount)
+            let colonWidth = geo.size.width * 0.09
+            let gap = geo.size.width * 0.015
+            let digitWidth = max(10, (geo.size.width - (CGFloat(colonCount) * colonWidth) - (CGFloat(glyphs.count - 1) * gap)) / CGFloat(digitCount))
+
+            HStack(alignment: .center, spacing: gap) {
+                ForEach(Array(glyphs.enumerated()), id: \.offset) { _, char in
+                    if char == ":" {
+                        VStack(spacing: geo.size.height * 0.18) {
+                            Circle()
+                                .fill(gradient)
+                                .frame(width: colonWidth * 0.80, height: colonWidth * 0.80)
+                            Circle()
+                                .fill(gradient)
+                                .frame(width: colonWidth * 0.80, height: colonWidth * 0.80)
+                        }
+                        .frame(width: colonWidth, height: geo.size.height)
+                    } else {
+                        StandbyGlyphShape(symbol: char)
+                            .stroke(
+                                gradient,
+                                style: StrokeStyle(
+                                    lineWidth: digitWidth * 0.23,
+                                    lineCap: .round,
+                                    lineJoin: .round
+                                )
+                            )
+                            .frame(width: digitWidth, height: geo.size.height)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        }
+    }
+
+    private var gradient: LinearGradient {
+        LinearGradient(
+            colors: [topColor, bottomColor],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+}
+
+private struct StandbyGlyphShape: Shape {
+    let symbol: Character
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let w = rect.width
+        let h = rect.height
+
+        func p(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
+            CGPoint(x: rect.minX + x * w, y: rect.minY + y * h)
+        }
+
+        switch symbol {
+        case "0":
+            path.addEllipse(in: CGRect(x: rect.minX + 0.18 * w, y: rect.minY + 0.08 * h, width: 0.64 * w, height: 0.84 * h))
+
+        case "1":
+            path.move(to: p(0.18, 0.24))
+            path.addLine(to: p(0.48, 0.10))
+            path.addLine(to: p(0.48, 0.90))
+
+        case "2":
+            path.move(to: p(0.20, 0.22))
+            path.addLine(to: p(0.36, 0.10))
+            path.addLine(to: p(0.76, 0.10))
+            path.addLine(to: p(0.82, 0.30))
+            path.addLine(to: p(0.28, 0.86))
+            path.addLine(to: p(0.82, 0.86))
+
+        case "3":
+            path.move(to: p(0.24, 0.16))
+            path.addLine(to: p(0.76, 0.16))
+            path.addLine(to: p(0.56, 0.50))
+            path.addLine(to: p(0.76, 0.84))
+            path.addLine(to: p(0.24, 0.84))
+
+        case "4":
+            path.move(to: p(0.70, 0.10))
+            path.addLine(to: p(0.70, 0.90))
+            path.move(to: p(0.22, 0.54))
+            path.addLine(to: p(0.78, 0.54))
+            path.move(to: p(0.22, 0.54))
+            path.addLine(to: p(0.58, 0.10))
+
+        case "5":
+            path.move(to: p(0.78, 0.14))
+            path.addLine(to: p(0.30, 0.14))
+            path.addLine(to: p(0.30, 0.50))
+            path.addLine(to: p(0.76, 0.50))
+            path.addLine(to: p(0.76, 0.86))
+            path.addLine(to: p(0.24, 0.86))
+
+        case "6":
+            path.move(to: p(0.76, 0.16))
+            path.addLine(to: p(0.34, 0.16))
+            path.addLine(to: p(0.24, 0.34))
+            path.addLine(to: p(0.24, 0.84))
+            path.addLine(to: p(0.76, 0.84))
+            path.addLine(to: p(0.76, 0.52))
+            path.addLine(to: p(0.32, 0.52))
+
+        case "7":
+            path.move(to: p(0.20, 0.14))
+            path.addLine(to: p(0.82, 0.14))
+            path.addLine(to: p(0.42, 0.90))
+
+        case "8":
+            path.addEllipse(in: CGRect(x: rect.minX + 0.20 * w, y: rect.minY + 0.08 * h, width: 0.60 * w, height: 0.38 * h))
+            path.addEllipse(in: CGRect(x: rect.minX + 0.20 * w, y: rect.minY + 0.52 * h, width: 0.60 * w, height: 0.38 * h))
+
+        case "9":
+            path.move(to: p(0.76, 0.48))
+            path.addLine(to: p(0.24, 0.48))
+            path.addLine(to: p(0.24, 0.16))
+            path.addLine(to: p(0.76, 0.16))
+            path.addLine(to: p(0.76, 0.86))
+
+        default:
+            break
+        }
+
+        return path
+    }
 }
