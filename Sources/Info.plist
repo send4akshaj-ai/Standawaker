@@ -22,6 +22,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Standawaker uses your selected photos for the photos StandBy screen.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Standawaker uses your location to show the current temperature.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
