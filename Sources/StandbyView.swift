@@ -12,6 +12,7 @@ struct StandbyView: View {
 
     @AppStorage("standbyColorIndex") private var standbyColorIndex: Int = 0
     @State private var now = Date()
+    @State private var displayedTime: String = ""
 
     private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -44,20 +45,25 @@ struct StandbyView: View {
                     .ignoresSafeArea()
 
                 HStack(spacing: 0) {
-                    Text(clockString(from: now))
-                        .font(standbyClockFont(size: min(geo.size.width * 0.44, geo.size.height * 0.82)))
-                        .tracking(-3)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.50)
-                        .monospacedDigit()
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [palette.top, palette.bottom],
-                                startPoint: .top,
-                                endPoint: .bottom
+                    ZStack {
+                        Text(displayedTime)
+                            .id(displayedTime)
+                            .font(standbyClockFont(size: min(geo.size.width * 0.44, geo.size.height * 0.82)))
+                            .tracking(-1.8)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.50)
+                            .monospacedDigit()
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [palette.top, palette.bottom],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
                             )
-                        )
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                            .transition(.opacity)
+                    }
+                    .animation(.easeInOut(duration: 0.20), value: displayedTime)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 
                     Color.clear
                         .frame(width: geo.size.width * 0.22)
@@ -93,10 +99,17 @@ struct StandbyView: View {
             wakeManager.keepScreenAwake = true
             wakeManager.applyCurrentSetting()
             weatherManager.start()
+            displayedTime = clockString(from: now)
         }
         .onReceive(ticker) { tick in
             now = tick
             wakeManager.applyCurrentSetting()
+            let newTime = clockString(from: tick)
+            if newTime != displayedTime {
+                withAnimation(.easeInOut(duration: 0.20)) {
+                    displayedTime = newTime
+                }
+            }
             let second = Calendar.current.component(.second, from: tick)
             let minute = Calendar.current.component(.minute, from: tick)
             if second == 0 && minute % 15 == 0 {
@@ -106,11 +119,17 @@ struct StandbyView: View {
     }
 
     private func standbyClockFont(size: CGFloat) -> Font {
-        let base = UIFont.systemFont(ofSize: size, weight: .bold)
-        if let roundedDescriptor = base.fontDescriptor.withDesign(.rounded) {
-            return Font(UIFont(descriptor: roundedDescriptor, size: size))
+        let candidates = [
+            "SFProDisplay-Heavy",
+            "SFProDisplay-Bold",
+            "SF Pro Display"
+        ]
+        for name in candidates {
+            if let font = UIFont(name: name, size: size) {
+                return Font(font)
+            }
         }
-        return .system(size: size, weight: .bold, design: .rounded)
+        return .system(size: size, weight: .heavy, design: .default)
     }
 
     private func clockString(from date: Date) -> String {
