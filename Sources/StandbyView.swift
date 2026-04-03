@@ -40,54 +40,53 @@ struct StandbyView: View {
 
     var body: some View {
         GeometryReader { geo in
+            let leftInset = max(geo.safeAreaInsets.leading + 6, geo.size.width * 0.03)
+            let rightInset = max(geo.safeAreaInsets.trailing + 6, geo.size.width * 0.03)
+            let topInset = max(geo.safeAreaInsets.top + 4, geo.size.height * 0.06)
+
             ZStack {
                 Color.black
                     .ignoresSafeArea()
 
-                HStack(spacing: 0) {
-                    ZStack {
-                        Text(displayedTime)
-                            .id(displayedTime)
-                            .font(standbyClockFont(size: min(geo.size.width * 0.44, geo.size.height * 0.82)))
-                            .tracking(-1.8)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.50)
-                            .monospacedDigit()
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [palette.top, palette.bottom],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
+                HStack(alignment: .top, spacing: geo.size.width * 0.01) {
+                    Text(displayedTime)
+                        .id(displayedTime)
+                        .font(standbyClockFont(size: min(geo.size.width * 0.41, geo.size.height * 0.80)))
+                        .tracking(-1.2)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.50)
+                        .monospacedDigit()
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [palette.top, palette.bottom],
+                                startPoint: .top,
+                                endPoint: .bottom
                             )
-                            .transition(.opacity)
-                    }
-                    .animation(.easeInOut(duration: 0.20), value: displayedTime)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        )
+                        .transition(.opacity)
+                        .animation(.easeInOut(duration: 0.20), value: displayedTime)
+                        .frame(width: geo.size.width * 0.77, alignment: .leading)
 
-                    Color.clear
-                        .frame(width: geo.size.width * 0.22)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .offset(x: -geo.size.width * 0.05, y: geo.size.height * 0.005)
+                    VStack(alignment: .leading, spacing: geo.size.height * 0.005) {
+                        (
+                            Text(weekdayString(from: now) + " ")
+                                .foregroundColor(palette.top)
+                            +
+                            Text(dayNumber(from: now))
+                                .foregroundColor(.white)
+                        )
+                        .font(.system(size: max(24, geo.size.width * 0.037), weight: .bold, design: .rounded))
 
-                VStack(alignment: .leading, spacing: geo.size.height * 0.005) {
-                    (
-                        Text(weekdayString(from: now) + " ")
-                            .foregroundColor(palette.top)
-                        +
-                        Text(dayNumber(from: now))
+                        Text(weatherManager.temperatureText)
+                            .font(.system(size: max(24, geo.size.width * 0.036), weight: .medium, design: .rounded))
                             .foregroundColor(.white)
-                    )
-                    .font(.system(size: max(24, geo.size.width * 0.037), weight: .bold, design: .rounded))
-
-                    Text(weatherManager.temperatureText)
-                        .font(.system(size: max(24, geo.size.width * 0.036), weight: .medium, design: .rounded))
-                        .foregroundColor(.white)
+                    }
+                    .frame(width: geo.size.width * 0.17, alignment: .leading)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                .padding(.trailing, geo.size.width * 0.055)
-                .padding(.top, geo.size.height * 0.13)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .padding(.leading, leftInset)
+                .padding(.trailing, rightInset)
+                .padding(.top, topInset)
             }
             .contentShape(Rectangle())
             .onTapGesture(count: 2) {
