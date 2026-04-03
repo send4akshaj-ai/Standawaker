@@ -33,6 +33,7 @@ You can build a single `.ipa` file using GitHub Actions (Apple cloud runners):
 3. Run workflow: `Build Unsigned IPA`.
 4. When it finishes, download artifact: `Standawaker-unsigned-ipa`.
 5. Extract it and use `Standawaker-unsigned.ipa` in Sideloadly on Windows.
+6. If it fails, download artifact `build-logs` and share `xcodebuild.log`.
 
 ## Build and sideload (with Mac)
 

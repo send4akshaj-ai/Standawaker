@@ -1,6 +1,7 @@
 name: Standawaker
 options:
   minimumXcodeGenVersion: 2.38.0
+  xcodeVersion: "15.0"
 
 settings:
   base:
@@ -14,6 +15,7 @@ settings:
     INFOPLIST_FILE: Sources/Info.plist
     ENABLE_PREVIEWS: YES
     SUPPORTED_PLATFORMS: iphoneos iphonesimulator
+    ASSETCATALOG_COMPILER_APPICON_NAME: ""
 
 targets:
   Standawaker:

@@ -5,20 +5,32 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install XcodeGen
-        run: brew install xcodegen
+        run: |
+          brew update
+          brew install xcodegen
+          xcodegen --version
+
+      - name: Show Xcode version
+        run: |
+          xcodebuild -version
+          ls /Applications | grep Xcode || true
 
       - name: Generate Xcode project
         run: xcodegen generate
 
+      - name: Validate project and scheme
+        run: xcodebuild -list -project Standawaker.xcodeproj
+
       - name: Build app (unsigned)
         run: |
+          set -o pipefail
           xcodebuild \
             -project Standawaker.xcodeproj \
             -scheme Standawaker \
@@ -28,7 +40,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build
+            build | tee build/xcodebuild.log
 
       - name: Package IPA
         run: |
@@ -43,3 +55,13 @@ jobs:
           name: Standawaker-unsigned-ipa
           path: build/Standawaker-unsigned.ipa
           if-no-files-found: error
+
+      - name: Upload build logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build/xcodebuild.log
+            build/Logs
+          if-no-files-found: warn
