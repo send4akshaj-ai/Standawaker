@@ -30,6 +30,7 @@ jobs:
 
       - name: Build app (unsigned)
         run: |
+          mkdir -p build
           set -o pipefail
           xcodebuild \
             -project Standawaker.xcodeproj \
@@ -40,10 +41,11 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build | tee build/xcodebuild.log
+            build 2>&1 | tee build/xcodebuild.log
 
       - name: Package IPA
         run: |
+          rm -rf build/Payload
           mkdir -p build/Payload
           cp -R "build/Build/Products/Release-iphoneos/Standawaker.app" "build/Payload/"
           cd build
