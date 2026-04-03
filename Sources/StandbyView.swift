@@ -49,14 +49,7 @@ struct StandbyView: View {
                     .ignoresSafeArea()
 
                 HStack(alignment: .top, spacing: geo.size.width * 0.01) {
-                    StandbyClockText(
-                        text: displayedTime,
-                        topColor: palette.top,
-                        bottomColor: palette.bottom
-                    )
-                    .id(displayedTime)
-                    .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.20), value: displayedTime)
+                    clockView(size: min(geo.size.width * 0.41, geo.size.height * 0.80))
                         .frame(width: geo.size.width * 0.77, alignment: .leading)
 
                     VStack(alignment: .leading, spacing: geo.size.height * 0.005) {
@@ -128,6 +121,59 @@ struct StandbyView: View {
         formatter.locale = .current
         formatter.dateFormat = "d"
         return formatter.string(from: date)
+    }
+
+    @ViewBuilder
+    private func clockView(size: CGFloat) -> some View {
+        if let uiFont = standbyClockUIFont(size: size) {
+            Text(displayedTime)
+                .id(displayedTime)
+                .font(Font(uiFont))
+                .tracking(-1.2)
+                .lineLimit(1)
+                .minimumScaleFactor(0.50)
+                .monospacedDigit()
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [palette.top, palette.bottom],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.20), value: displayedTime)
+        } else {
+            StandbyClockText(
+                text: displayedTime,
+                topColor: palette.top,
+                bottomColor: palette.bottom
+            )
+            .id(displayedTime)
+            .transition(.opacity)
+            .animation(.easeInOut(duration: 0.20), value: displayedTime)
+        }
+    }
+
+    private func standbyClockUIFont(size: CGFloat) -> UIFont? {
+        let names = [
+            ".SFUIRounded-Heavy",
+            ".SFUIRounded-Bold",
+            ".SFUIRounded-Semibold",
+            "SFUIRounded-Heavy",
+            "SFUIRounded-Bold",
+            "SFProRounded-Heavy",
+            "SFProRounded-Bold",
+            "SF Pro Rounded",
+            "SFProDisplay-Heavy",
+            "SFProDisplay-Bold"
+        ]
+
+        for name in names {
+            if let font = UIFont(name: name, size: size) {
+                return font
+            }
+        }
+        return nil
     }
 }
 
