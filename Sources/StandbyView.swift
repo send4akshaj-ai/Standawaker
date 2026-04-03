@@ -12,44 +12,48 @@ struct StandbyView: View {
                 Color.black
                     .ignoresSafeArea()
 
-                HStack(alignment: .top, spacing: 8) {
-                    Text(clockString(from: now))
-                        .font(
-                            .system(
-                                size: min(geo.size.width * 0.56, geo.size.height * 1.05),
-                                weight: .black,
-                                design: .rounded
-                            )
+                Text(clockString(from: now))
+                    .font(
+                        .system(
+                            size: min(geo.size.width * 0.47, geo.size.height * 0.83),
+                            weight: .black,
+                            design: .rounded
                         )
-                        .minimumScaleFactor(0.45)
-                        .lineLimit(1)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [
-                                    Color(red: 0.97, green: 0.49, blue: 0.45),
-                                    Color(red: 0.86, green: 0.48, blue: 0.77)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
+                    )
+                    .tracking(-4)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.45)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 0.97, green: 0.48, blue: 0.44),
+                                Color(red: 0.86, green: 0.47, blue: 0.78)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
                         )
-                        .padding(.leading, max(18, geo.size.width * 0.035))
-                        .padding(.top, max(18, geo.size.height * 0.06))
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding(.leading, geo.size.width * 0.15)
+                    .padding(.top, geo.size.height * 0.08)
 
-                    Spacer(minLength: 0)
-
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(dayAndDateString(from: now))
-                            .font(.system(size: max(26, geo.size.width * 0.030), weight: .bold, design: .rounded))
-                            .foregroundColor(Color(red: 0.97, green: 0.49, blue: 0.45))
-
-                        Text("31\u{00B0}C")
-                            .font(.system(size: max(26, geo.size.width * 0.030), weight: .medium, design: .rounded))
+                VStack(alignment: .leading, spacing: 2) {
+                    (
+                        Text(weekdayString(from: now) + " ")
+                            .foregroundColor(Color(red: 0.97, green: 0.48, blue: 0.44))
+                        +
+                        Text(dayNumber(from: now))
                             .foregroundColor(.white)
-                    }
-                    .padding(.trailing, max(20, geo.size.width * 0.045))
-                    .padding(.top, max(36, geo.size.height * 0.11))
+                    )
+                    .font(.system(size: max(26, geo.size.width * 0.045), weight: .bold, design: .rounded))
+
+                    Text("31\u{00B0}C")
+                        .font(.system(size: max(24, geo.size.width * 0.043), weight: .medium, design: .rounded))
+                        .foregroundColor(.white)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .padding(.trailing, geo.size.width * 0.08)
+                .padding(.top, geo.size.height * 0.14)
             }
         }
         .onAppear {
@@ -70,11 +74,18 @@ struct StandbyView: View {
         return formatter.string(from: date)
     }
 
-    private func dayAndDateString(from date: Date) -> String {
+    private func weekdayString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "EEE"
+        return formatter.string(from: date).uppercased()
+    }
+
+    private func dayNumber(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = .current
-        formatter.dateFormat = "EEE d"
-        return formatter.string(from: date).uppercased()
+        formatter.dateFormat = "d"
+        return formatter.string(from: date)
     }
 }
 
