@@ -3,114 +3,122 @@ import SwiftUI
 import UIKit
 
 private enum StandByPage: Int, CaseIterable, Identifiable {
-    case clock
     case widgets
+    case clock
     case photos
 
     var id: Int { rawValue }
+}
+
+private enum ClockLayout: String, CaseIterable, Identifiable {
+    case full
+    case stacked
+    case minimal
+
+    var id: String { rawValue }
 
     var title: String {
         switch self {
-        case .clock: return "Clock"
-        case .widgets: return "Widgets"
-        case .photos: return "Photos"
+        case .full: return "Full"
+        case .stacked: return "Stacked"
+        case .minimal: return "Minimal"
         }
     }
 }
 
-private enum StandByColorTheme: String, CaseIterable, Identifiable {
-    case crimson
-    case orange
-    case amber
-    case lime
-    case emerald
-    case cyan
+private enum StandByTheme: String, CaseIterable, Identifiable {
+    case standbyRed
+    case glowOrange
+    case solarAmber
+    case neonLime
+    case appleGreen
+    case aqua
     case cobalt
-    case indigo
-    case violet
-    case magenta
+    case ultraViolet
+    case orchid
+    case rose
     case slate
     case mono
 
     var id: String { rawValue }
 
-    var label: String {
+    var name: String {
         switch self {
-        case .crimson: return "Crimson"
-        case .orange: return "Orange"
-        case .amber: return "Amber"
-        case .lime: return "Lime"
-        case .emerald: return "Emerald"
-        case .cyan: return "Cyan"
+        case .standbyRed: return "StandBy Red"
+        case .glowOrange: return "Glow Orange"
+        case .solarAmber: return "Solar Amber"
+        case .neonLime: return "Neon Lime"
+        case .appleGreen: return "Apple Green"
+        case .aqua: return "Aqua"
         case .cobalt: return "Cobalt"
-        case .indigo: return "Indigo"
-        case .violet: return "Violet"
-        case .magenta: return "Magenta"
+        case .ultraViolet: return "Ultra Violet"
+        case .orchid: return "Orchid"
+        case .rose: return "Rose"
         case .slate: return "Slate"
         case .mono: return "Mono"
         }
     }
 
-    var primary: Color {
+    var accent: Color {
         switch self {
-        case .crimson: return Color(red: 0.94, green: 0.18, blue: 0.26)
-        case .orange: return Color(red: 0.98, green: 0.47, blue: 0.11)
-        case .amber: return Color(red: 0.98, green: 0.74, blue: 0.13)
-        case .lime: return Color(red: 0.71, green: 0.93, blue: 0.22)
-        case .emerald: return Color(red: 0.20, green: 0.85, blue: 0.47)
-        case .cyan: return Color(red: 0.15, green: 0.86, blue: 0.90)
-        case .cobalt: return Color(red: 0.25, green: 0.53, blue: 0.96)
-        case .indigo: return Color(red: 0.35, green: 0.36, blue: 0.96)
-        case .violet: return Color(red: 0.62, green: 0.33, blue: 0.95)
-        case .magenta: return Color(red: 0.97, green: 0.26, blue: 0.81)
-        case .slate: return Color(red: 0.56, green: 0.65, blue: 0.72)
-        case .mono: return Color(red: 0.93, green: 0.93, blue: 0.93)
+        case .standbyRed: return Color(red: 1.0, green: 0.19, blue: 0.24)
+        case .glowOrange: return Color(red: 0.99, green: 0.49, blue: 0.08)
+        case .solarAmber: return Color(red: 0.98, green: 0.75, blue: 0.16)
+        case .neonLime: return Color(red: 0.78, green: 0.98, blue: 0.26)
+        case .appleGreen: return Color(red: 0.22, green: 0.90, blue: 0.48)
+        case .aqua: return Color(red: 0.17, green: 0.88, blue: 0.94)
+        case .cobalt: return Color(red: 0.28, green: 0.55, blue: 1.0)
+        case .ultraViolet: return Color(red: 0.55, green: 0.40, blue: 1.0)
+        case .orchid: return Color(red: 0.82, green: 0.40, blue: 0.97)
+        case .rose: return Color(red: 0.98, green: 0.32, blue: 0.62)
+        case .slate: return Color(red: 0.70, green: 0.76, blue: 0.82)
+        case .mono: return Color(red: 0.97, green: 0.97, blue: 0.97)
         }
     }
 
-    var secondary: Color {
+    var secondaryAccent: Color {
         switch self {
-        case .crimson: return Color(red: 1.00, green: 0.37, blue: 0.42)
-        case .orange: return Color(red: 1.00, green: 0.61, blue: 0.22)
-        case .amber: return Color(red: 1.00, green: 0.84, blue: 0.33)
-        case .lime: return Color(red: 0.83, green: 0.98, blue: 0.42)
-        case .emerald: return Color(red: 0.38, green: 0.94, blue: 0.62)
-        case .cyan: return Color(red: 0.36, green: 0.95, blue: 0.98)
-        case .cobalt: return Color(red: 0.44, green: 0.67, blue: 0.99)
-        case .indigo: return Color(red: 0.50, green: 0.51, blue: 1.00)
-        case .violet: return Color(red: 0.75, green: 0.52, blue: 0.99)
-        case .magenta: return Color(red: 1.00, green: 0.40, blue: 0.88)
-        case .slate: return Color(red: 0.71, green: 0.79, blue: 0.84)
-        case .mono: return Color(red: 1.00, green: 1.00, blue: 1.00)
+        case .standbyRed: return Color(red: 1.0, green: 0.39, blue: 0.43)
+        case .glowOrange: return Color(red: 1.0, green: 0.67, blue: 0.30)
+        case .solarAmber: return Color(red: 1.0, green: 0.88, blue: 0.38)
+        case .neonLime: return Color(red: 0.89, green: 1.0, blue: 0.50)
+        case .appleGreen: return Color(red: 0.48, green: 0.97, blue: 0.67)
+        case .aqua: return Color(red: 0.45, green: 0.97, blue: 0.99)
+        case .cobalt: return Color(red: 0.52, green: 0.72, blue: 1.0)
+        case .ultraViolet: return Color(red: 0.69, green: 0.57, blue: 1.0)
+        case .orchid: return Color(red: 0.92, green: 0.57, blue: 1.0)
+        case .rose: return Color(red: 1.0, green: 0.51, blue: 0.76)
+        case .slate: return Color(red: 0.80, green: 0.86, blue: 0.90)
+        case .mono: return .white
         }
     }
 
     var background: [Color] {
         switch self {
-        case .crimson:
-            return [Color(red: 0.19, green: 0.02, blue: 0.05), Color(red: 0.08, green: 0.01, blue: 0.02), .black]
-        case .orange:
-            return [Color(red: 0.20, green: 0.07, blue: 0.01), Color(red: 0.09, green: 0.03, blue: 0.01), .black]
-        case .amber:
-            return [Color(red: 0.16, green: 0.11, blue: 0.00), Color(red: 0.09, green: 0.06, blue: 0.00), .black]
-        case .lime:
-            return [Color(red: 0.06, green: 0.13, blue: 0.01), Color(red: 0.03, green: 0.07, blue: 0.01), .black]
-        case .emerald:
-            return [Color(red: 0.02, green: 0.13, blue: 0.06), Color(red: 0.01, green: 0.06, blue: 0.03), .black]
-        case .cyan:
-            return [Color(red: 0.01, green: 0.12, blue: 0.14), Color(red: 0.01, green: 0.05, blue: 0.07), .black]
+        case .standbyRed:
+            return [Color(red: 0.15, green: 0.01, blue: 0.03), Color(red: 0.08, green: 0.01, blue: 0.02), .black]
+        case .glowOrange:
+            return [Color(red: 0.17, green: 0.06, blue: 0.01), Color(red: 0.08, green: 0.03, blue: 0.01), .black]
+        case .solarAmber:
+            return [Color(red: 0.15, green: 0.11, blue: 0.01), Color(red: 0.07, green: 0.05, blue: 0.01), .black]
+        case .neonLime:
+            return [Color(red: 0.06, green: 0.12, blue: 0.01), Color(red: 0.03, green: 0.06, blue: 0.01), .black]
+        case .appleGreen:
+            return [Color(red: 0.01, green: 0.12, blue: 0.05), Color(red: 0.01, green: 0.06, blue: 0.03), .black]
+        case .aqua:
+            return [Color(red: 0.01, green: 0.12, blue: 0.13), Color(red: 0.01, green: 0.05, blue: 0.06), .black]
         case .cobalt:
-            return [Color(red: 0.02, green: 0.08, blue: 0.18), Color(red: 0.01, green: 0.04, blue: 0.09), .black]
-        case .indigo:
-            return [Color(red: 0.04, green: 0.04, blue: 0.18), Color(red: 0.02, green: 0.02, blue: 0.09), .black]
-        case .violet:
-            return [Color(red: 0.10, green: 0.03, blue: 0.18), Color(red: 0.05, green: 0.01, blue: 0.09), .black]
-        case .magenta:
-            return [Color(red: 0.18, green: 0.02, blue: 0.14), Color(red: 0.08, green: 0.01, blue: 0.06), .black]
+            return [Color(red: 0.02, green: 0.07, blue: 0.18), Color(red: 0.01, green: 0.03, blue: 0.09), .black]
+        case .ultraViolet:
+            return [Color(red: 0.06, green: 0.03, blue: 0.18), Color(red: 0.03, green: 0.01, blue: 0.09), .black]
+        case .orchid:
+            return [Color(red: 0.12, green: 0.02, blue: 0.16), Color(red: 0.06, green: 0.01, blue: 0.08), .black]
+        case .rose:
+            return [Color(red: 0.15, green: 0.02, blue: 0.09), Color(red: 0.07, green: 0.01, blue: 0.04), .black]
         case .slate:
             return [Color(red: 0.06, green: 0.08, blue: 0.10), Color(red: 0.03, green: 0.04, blue: 0.05), .black]
         case .mono:
-            return [Color(red: 0.11, green: 0.11, blue: 0.11), Color(red: 0.05, green: 0.05, blue: 0.05), .black]
+            return [Color(red: 0.10, green: 0.10, blue: 0.10), Color(red: 0.05, green: 0.05, blue: 0.05), .black]
         }
     }
 }
@@ -119,56 +127,61 @@ struct StandbyView: View {
     @EnvironmentObject private var wakeManager: WakeManager
 
     @AppStorage("use24HourClock") private var use24HourClock: Bool = true
-    @AppStorage("showSeconds") private var showSeconds: Bool = false
-    @AppStorage("dimmerOpacity") private var dimmerOpacity: Double = 0.16
+    @AppStorage("showSeconds") private var showSeconds: Bool = true
+    @AppStorage("dimmerOpacity") private var dimmerOpacity: Double = 0.18
     @AppStorage("enableNightModeTint") private var enableNightModeTint: Bool = true
     @AppStorage("autoNightModeTint") private var autoNightModeTint: Bool = true
-    @AppStorage("lastStandByPage") private var lastStandByPage: Int = StandByPage.clock.rawValue
-    @AppStorage("standByColorTheme") private var standByColorTheme: String = StandByColorTheme.crimson.rawValue
+    @AppStorage("standByTheme") private var standByThemeRaw: String = StandByTheme.standbyRed.rawValue
+    @AppStorage("clockLayout") private var clockLayoutRaw: String = ClockLayout.full.rawValue
+    @AppStorage("lastStandByPage") private var lastStandByPage: Int = StandByPage.widgets.rawValue
 
     @StateObject private var motionManager = StandbyMotionManager()
-    @State private var now: Date = Date()
-    @State private var showControls: Bool = false
-    @State private var pageSelection: Int = StandByPage.clock.rawValue
-    @State private var batteryPercentText: String = "--%"
-    @State private var isCharging: Bool = false
+    @State private var now = Date()
+    @State private var pageSelection = StandByPage.widgets.rawValue
+    @State private var showControls = false
+    @State private var batteryPercentText = "--%"
+    @State private var isCharging = false
     @State private var burnInOffset: CGSize = .zero
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var selectedPhotos: [UIImage] = []
-    @State private var currentPhotoIndex: Int = 0
+    @State private var currentPhotoIndex = 0
     @State private var controlsAutoHideTask: Task<Void, Never>?
+    @State private var photosZoomPulse = false
 
-    private let clockTicker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    private let burnInTicker = Timer.publish(every: 70, on: .main, in: .common).autoconnect()
-    private let slideshowTicker = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    private let secondTicker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    private let burnInTicker = Timer.publish(every: 55, on: .main, in: .common).autoconnect()
+    private let slideshowTicker = Timer.publish(every: 9, on: .main, in: .common).autoconnect()
+    private let glowTicker = Timer.publish(every: 3.5, on: .main, in: .common).autoconnect()
 
-    private var selectedTheme: StandByColorTheme {
-        StandByColorTheme(rawValue: standByColorTheme) ?? .crimson
+    private var theme: StandByTheme {
+        StandByTheme(rawValue: standByThemeRaw) ?? .standbyRed
+    }
+
+    private var clockLayout: ClockLayout {
+        ClockLayout(rawValue: clockLayoutRaw) ?? .full
     }
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                backgroundView
+                backgroundLayer
 
                 TabView(selection: $pageSelection) {
-                    clockPage(in: geometry.size)
-                        .tag(StandByPage.clock.rawValue)
-
-                    widgetsPage
+                    widgetsReplicaPage(in: geometry.size)
                         .tag(StandByPage.widgets.rawValue)
 
-                    photosPage
+                    fullClockReplicaPage(in: geometry.size)
+                        .tag(StandByPage.clock.rawValue)
+
+                    photoReplicaPage
                         .tag(StandByPage.photos.rawValue)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .offset(
-                    x: burnInOffset.width + motionManager.roll * 10,
-                    y: burnInOffset.height + motionManager.pitch * 8
-                )
-                .animation(.easeInOut(duration: 0.9), value: burnInOffset)
-                .overlay(alignment: .top) {
-                    topPageLabel
+                .offset(x: burnInOffset.width + motionManager.roll * 9, y: burnInOffset.height + motionManager.pitch * 7)
+                .animation(.easeInOut(duration: 1.0), value: burnInOffset)
+                .overlay(alignment: .trailing) {
+                    sidePageIndicator
+                        .padding(.trailing, 10)
                 }
 
                 Color.black
@@ -177,8 +190,8 @@ struct StandbyView: View {
                     .allowsHitTesting(false)
 
                 if isNightTintActive {
-                    selectedTheme.primary
-                        .opacity(max(0.08, dimmerOpacity * 0.75))
+                    theme.accent
+                        .opacity(max(0.10, dimmerOpacity * 0.72))
                         .blendMode(.plusLighter)
                         .ignoresSafeArea()
                         .allowsHitTesting(false)
@@ -198,7 +211,7 @@ struct StandbyView: View {
             wakeManager.forceAlwaysOnScreen = true
             wakeManager.keepScreenAwake = true
             wakeManager.applyCurrentSetting()
-            refreshBatteryInfo()
+            refreshBattery()
             motionManager.start()
             scheduleControlsAutoHide()
         }
@@ -207,242 +220,377 @@ struct StandbyView: View {
             controlsAutoHideTask = nil
             motionManager.stop()
         }
-        .onChange(of: pageSelection) { newValue in
-            lastStandByPage = newValue
+        .onChange(of: photoItems) { items in
+            Task { await loadPhotos(from: items) }
+        }
+        .onChange(of: pageSelection) { newPage in
+            lastStandByPage = newPage
             scheduleControlsAutoHide()
         }
-        .onChange(of: photoItems) { items in
-            Task {
-                await loadPhotos(from: items)
-            }
-        }
-        .onReceive(clockTicker) { value in
-            now = value
-            refreshBatteryInfo()
+        .onReceive(secondTicker) { tick in
+            now = tick
+            refreshBattery()
+            wakeManager.applyCurrentSetting()
         }
         .onReceive(slideshowTicker) { _ in
             guard pageSelection == StandByPage.photos.rawValue else { return }
             guard selectedPhotos.count > 1 else { return }
-            withAnimation(.easeInOut(duration: 0.6)) {
+            withAnimation(.easeInOut(duration: 0.8)) {
                 currentPhotoIndex = (currentPhotoIndex + 1) % selectedPhotos.count
+                photosZoomPulse.toggle()
             }
         }
         .onReceive(burnInTicker) { _ in
             guard !showControls else { return }
-            withAnimation(.easeInOut(duration: 1.2)) {
-                burnInOffset = CGSize(
-                    width: Double.random(in: -5...5),
-                    height: Double.random(in: -4...4)
-                )
+            withAnimation(.easeInOut(duration: 1.5)) {
+                burnInOffset = CGSize(width: Double.random(in: -4...4), height: Double.random(in: -3...3))
+            }
+        }
+        .onReceive(glowTicker) { _ in
+            withAnimation(.easeInOut(duration: 1.4)) {
+                photosZoomPulse.toggle()
             }
         }
     }
 
-    private var backgroundView: some View {
-        LinearGradient(
-            colors: selectedTheme.background,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+    private var backgroundLayer: some View {
+        ZStack {
+            LinearGradient(colors: theme.background, startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+
+            RadialGradient(
+                colors: [theme.accent.opacity(0.22), .clear],
+                center: .center,
+                startRadius: 24,
+                endRadius: 430
+            )
+            .ignoresSafeArea()
+        }
     }
 
-    private var topPageLabel: some View {
-        HStack(spacing: 8) {
-            ForEach(StandByPage.allCases) { page in
-                Circle()
-                    .fill(pageSelection == page.rawValue ? selectedTheme.secondary : Color.white.opacity(0.25))
-                    .frame(width: pageSelection == page.rawValue ? 8 : 6, height: pageSelection == page.rawValue ? 8 : 6)
+    private func widgetsReplicaPage(in size: CGSize) -> some View {
+        let columnSpacing = max(12, size.width * 0.018)
+
+        return HStack(spacing: columnSpacing) {
+            VStack(spacing: columnSpacing) {
+                standbyCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(monthHeader(from: now))
+                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                            .foregroundColor(theme.secondaryAccent.opacity(0.92))
+                        Spacer(minLength: 0)
+                        Text(dayNumber(from: now))
+                            .font(.system(size: min(size.width, size.height) * 0.20, weight: .bold, design: .rounded))
+                            .foregroundColor(theme.secondaryAccent)
+                        Text(weekdayName(from: now))
+                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.80))
+                    }
+                }
+
+                standbyCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("NEXT")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.58))
+                        Spacer(minLength: 0)
+                        Label("No Alarms", systemImage: "alarm")
+                            .font(.system(size: 20, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.88))
+                        Text("Add alarms in Clock app")
+                            .font(.system(size: 14, weight: .medium, design: .rounded))
+                            .foregroundColor(.white.opacity(0.60))
+                    }
+                }
+            }
+
+            VStack(spacing: columnSpacing) {
+                standbyCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("TIME")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.58))
+                        Spacer(minLength: 0)
+                        Text(timeString(from: now, seconds: false))
+                            .font(.system(size: min(size.width, size.height) * 0.22, weight: .bold, design: .rounded))
+                            .monospacedDigit()
+                            .minimumScaleFactor(0.5)
+                            .foregroundStyle(theme.secondaryAccent)
+                            .shadow(color: theme.accent.opacity(0.34), radius: 12, x: 0, y: 0)
+                    }
+                }
+
+                standbyCard {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("BATTERY")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.58))
+                        Spacer(minLength: 0)
+                        Text(batteryPercentText)
+                            .font(.system(size: min(size.width, size.height) * 0.13, weight: .bold, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(theme.secondaryAccent)
+                        Label(isCharging ? "Charging" : "On Battery", systemImage: isCharging ? "bolt.fill" : "battery.75")
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.78))
+                    }
+                }
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(.ultraThinMaterial, in: Capsule())
-        .padding(.top, 12)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 20)
     }
 
-    private func clockPage(in size: CGSize) -> some View {
-        VStack(spacing: 14) {
+    private func fullClockReplicaPage(in size: CGSize) -> some View {
+        VStack(spacing: 12) {
+            Spacer(minLength: size.height * 0.06)
+
+            switch clockLayout {
+            case .full:
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(hourString(from: now))
+                        .font(.system(size: min(size.width, size.height) * 0.48, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(theme.secondaryAccent)
+                    Text(":")
+                        .font(.system(size: min(size.width, size.height) * 0.47, weight: .bold, design: .rounded))
+                        .opacity(colonVisible ? 1.0 : 0.48)
+                        .foregroundStyle(theme.secondaryAccent)
+                    Text(minuteString(from: now))
+                        .font(.system(size: min(size.width, size.height) * 0.48, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(theme.secondaryAccent)
+                }
+                .shadow(color: theme.accent.opacity(0.36), radius: 18, x: 0, y: 0)
+
+            case .stacked:
+                VStack(spacing: -4) {
+                    Text(hourString(from: now))
+                        .font(.system(size: min(size.width, size.height) * 0.41, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(theme.secondaryAccent)
+                    Text(minuteString(from: now))
+                        .font(.system(size: min(size.width, size.height) * 0.41, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(theme.secondaryAccent)
+                }
+                .shadow(color: theme.accent.opacity(0.36), radius: 16, x: 0, y: 0)
+
+            case .minimal:
+                Text(timeString(from: now, seconds: false))
+                    .font(.system(size: min(size.width, size.height) * 0.34, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(theme.secondaryAccent)
+                    .shadow(color: theme.accent.opacity(0.33), radius: 12, x: 0, y: 0)
+            }
+
+            if showSeconds {
+                Text(secondString(from: now))
+                    .font(.system(size: 30, weight: .semibold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundColor(.white.opacity(0.66))
+            }
+
+            if !use24HourClock {
+                Text(meridiem(from: now))
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .foregroundColor(.white.opacity(0.72))
+            }
+
+            Text(dateLongString(from: now))
+                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                .foregroundColor(.white.opacity(0.80))
+
             Spacer()
-
-            Text(timeString(from: now))
-                .font(.system(size: min(size.width, size.height) * 0.45, weight: .bold, design: .rounded))
-                .monospacedDigit()
-                .minimumScaleFactor(0.35)
-                .foregroundStyle(selectedTheme.secondary)
-                .shadow(color: selectedTheme.primary.opacity(0.35), radius: 10, x: 0, y: 0)
-
-            Text(dateString(from: now))
-                .font(.system(size: min(size.width, size.height) * 0.09, weight: .medium, design: .rounded))
-                .foregroundStyle(.white.opacity(0.82))
-
-            HStack(spacing: 14) {
-                statusPill(text: "Battery \(batteryPercentText)")
-                statusPill(text: isCharging ? "Charging" : "Not Charging")
-            }
-
-            Spacer()
-        }
-        .padding(.horizontal, 24)
-    }
-
-    private var widgetsPage: some View {
-        HStack(spacing: 14) {
-            VStack(spacing: 14) {
-                widgetCard(title: "Date", content: dateShortString(from: now), subtitle: weekdayString(from: now))
-                widgetCard(title: "Time", content: timeString(from: now), subtitle: use24HourClock ? "24-hour" : "12-hour")
-            }
-
-            VStack(spacing: 14) {
-                widgetCard(title: "Battery", content: batteryPercentText, subtitle: isCharging ? "Charging" : "On Battery")
-                widgetCard(title: "Screen", content: "Always On", subtitle: "Active in app")
-            }
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 16)
     }
 
-    private var photosPage: some View {
+    private var photoReplicaPage: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(Color.white.opacity(0.06))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30, style: .continuous)
-                        .stroke(selectedTheme.primary.opacity(0.35), lineWidth: 1)
-                )
-                .padding(.horizontal, 16)
-                .padding(.vertical, 14)
-
             if let image = selectedPhotos[safe: currentPhotoIndex] {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
+                    .scaleEffect(photosZoomPulse ? 1.06 : 1.01)
+                    .animation(.easeInOut(duration: 8), value: photosZoomPulse)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 14)
-                    .transition(.opacity)
+                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                    .padding(14)
+                    .overlay(alignment: .bottomLeading) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(timeString(from: now, seconds: false))
+                                .font(.system(size: 44, weight: .bold, design: .rounded))
+                                .monospacedDigit()
+                                .foregroundStyle(.white)
+                            Text(dateLongString(from: now))
+                                .font(.system(size: 18, weight: .medium, design: .rounded))
+                                .foregroundColor(.white.opacity(0.86))
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 22)
+                    }
             } else {
-                VStack(spacing: 10) {
-                    Image(systemName: "photo.stack")
-                        .font(.system(size: 40, weight: .regular))
-                        .foregroundColor(selectedTheme.secondary.opacity(0.95))
-                    Text("Add photos from controls")
-                        .font(.system(size: 20, weight: .medium, design: .rounded))
-                        .foregroundColor(.white.opacity(0.84))
-                    Text("Tap screen to open controls")
-                        .font(.system(size: 14, weight: .regular, design: .rounded))
-                        .foregroundColor(.white.opacity(0.58))
+                standbyCard {
+                    VStack(spacing: 12) {
+                        Image(systemName: "photo.stack")
+                            .font(.system(size: 46, weight: .regular))
+                            .foregroundColor(theme.secondaryAccent.opacity(0.95))
+                        Text("Add photos from controls")
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white.opacity(0.84))
+                        Text("Tap screen, then choose photos")
+                            .font(.system(size: 15, weight: .medium, design: .rounded))
+                            .foregroundColor(.white.opacity(0.58))
+                    }
                 }
+                .padding(14)
             }
         }
+    }
+
+    private var sidePageIndicator: some View {
+        VStack(spacing: 7) {
+            ForEach(StandByPage.allCases) { page in
+                Capsule()
+                    .fill(pageSelection == page.rawValue ? theme.secondaryAccent : Color.white.opacity(0.22))
+                    .frame(width: 4, height: pageSelection == page.rawValue ? 20 : 10)
+            }
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 10)
+        .background(Color.black.opacity(0.35), in: Capsule())
     }
 
     private var controlsPanel: some View {
         VStack {
             HStack {
                 Spacer()
-                Button("Hide") {
+                Button("Close") {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         showControls = false
                     }
                 }
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .font(.system(size: 13, weight: .bold, design: .rounded))
                 .padding(.horizontal, 12)
                 .padding(.vertical, 7)
-                .background(Color.white.opacity(0.14))
-                .clipShape(Capsule())
+                .background(Color.white.opacity(0.14), in: Capsule())
             }
-            .padding([.top, .horizontal], 16)
+            .padding([.top, .horizontal], 14)
 
             Spacer()
 
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 11) {
                 HStack(spacing: 8) {
-                    ForEach(StandByPage.allCases) { page in
-                        Button(page.title) {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                pageSelection = page.rawValue
-                            }
-                        }
-                        .font(.system(size: 13, weight: .semibold, design: .rounded))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(pageSelection == page.rawValue ? selectedTheme.primary.opacity(0.38) : Color.white.opacity(0.10))
-                        .clipShape(Capsule())
-                    }
+                    quickPageButton(title: "Widgets", page: .widgets)
+                    quickPageButton(title: "Clock", page: .clock)
+                    quickPageButton(title: "Photos", page: .photos)
                 }
 
-                Text("Color")
+                Text("Themes")
                     .font(.system(size: 13, weight: .bold, design: .rounded))
                     .foregroundColor(.white.opacity(0.72))
 
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
-                        ForEach(StandByColorTheme.allCases) { theme in
+                    HStack(spacing: 8) {
+                        ForEach(StandByTheme.allCases) { candidate in
                             Button {
-                                standByColorTheme = theme.rawValue
+                                standByThemeRaw = candidate.rawValue
                             } label: {
-                                Circle()
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [theme.secondary, theme.primary],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
-                                    )
-                                    .overlay(
-                                        Circle()
-                                            .stroke(
-                                                standByColorTheme == theme.rawValue ? Color.white : Color.white.opacity(0.25),
-                                                lineWidth: standByColorTheme == theme.rawValue ? 2.5 : 1
+                                VStack(spacing: 4) {
+                                    Circle()
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [candidate.secondaryAccent, candidate.accent],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
                                             )
-                                    )
-                                    .frame(width: 28, height: 28)
+                                        )
+                                        .frame(width: 26, height: 26)
+                                        .overlay(
+                                            Circle().stroke(standByThemeRaw == candidate.rawValue ? Color.white : Color.white.opacity(0.25), lineWidth: standByThemeRaw == candidate.rawValue ? 2.0 : 1.0)
+                                        )
+                                    Text(candidate.name)
+                                        .font(.system(size: 10, weight: .medium, design: .rounded))
+                                        .foregroundColor(.white.opacity(0.66))
+                                }
                             }
-                            .accessibilityLabel(theme.label)
                         }
                     }
                     .padding(.vertical, 2)
                 }
 
-                Label("Always-on screen enabled", systemImage: "lock.fill")
-                    .font(.system(size: 14, weight: .semibold, design: .rounded))
-                    .foregroundColor(selectedTheme.secondary)
+                HStack {
+                    Text("Clock Layout")
+                    Spacer()
+                    Picker("Clock Layout", selection: $clockLayoutRaw) {
+                        ForEach(ClockLayout.allCases) { style in
+                            Text(style.title).tag(style.rawValue)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(maxWidth: 220)
+                }
 
+                Toggle("Always-on while app is open", isOn: $wakeManager.forceAlwaysOnScreen)
                 Toggle("24-hour clock", isOn: $use24HourClock)
                 Toggle("Show seconds", isOn: $showSeconds)
-                Toggle("Night mode tint", isOn: $enableNightModeTint)
-                Toggle("Auto night mode", isOn: $autoNightModeTint)
+                Toggle("Night tint", isOn: $enableNightModeTint)
+                Toggle("Auto night tint", isOn: $autoNightModeTint)
 
                 HStack {
                     Text("Dimmer")
-                    Slider(value: $dimmerOpacity, in: 0...0.92)
+                    Slider(value: $dimmerOpacity, in: 0...0.95)
                 }
 
-                PhotosPicker(selection: $photoItems, maxSelectionCount: 24, matching: .images) {
-                    Text("Choose Photos")
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                PhotosPicker(selection: $photoItems, maxSelectionCount: 30, matching: .images) {
+                    Label("Choose Photos", systemImage: "photo.on.rectangle.angled")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(selectedTheme.primary.opacity(0.30))
-                        .clipShape(Capsule())
+                        .background(theme.accent.opacity(0.36), in: Capsule())
                 }
             }
-            .tint(selectedTheme.secondary)
-            .font(.system(size: 15, weight: .medium, design: .rounded))
+            .tint(theme.secondaryAccent)
+            .font(.system(size: 14, weight: .semibold, design: .rounded))
             .foregroundColor(.white)
             .padding(14)
-            .background(Color.black.opacity(0.58))
+            .background(Color.black.opacity(0.60), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(selectedTheme.primary.opacity(0.35), lineWidth: 1)
+                    .stroke(theme.accent.opacity(0.45), lineWidth: 1)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
+            .padding(.horizontal, 14)
+            .padding(.bottom, 14)
         }
         .transition(.opacity.combined(with: .move(edge: .bottom)))
+    }
+
+    private func quickPageButton(title: String, page: StandByPage) -> some View {
+        Button(title) {
+            withAnimation(.easeInOut(duration: 0.25)) {
+                pageSelection = page.rawValue
+            }
+        }
+        .font(.system(size: 13, weight: .bold, design: .rounded))
+        .padding(.horizontal, 11)
+        .padding(.vertical, 6)
+        .background(pageSelection == page.rawValue ? theme.accent.opacity(0.44) : Color.white.opacity(0.10), in: Capsule())
+    }
+
+    private func standbyCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        content()
+            .padding(14)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            .background(Color.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .stroke(theme.accent.opacity(0.32), lineWidth: 1)
+            )
+    }
+
+    private var colonVisible: Bool {
+        Calendar.current.component(.second, from: now).isMultiple(of: 2)
     }
 
     private var isNightTintActive: Bool {
@@ -452,7 +600,7 @@ struct StandbyView: View {
         return hour >= 22 || hour <= 6
     }
 
-    private func refreshBatteryInfo() {
+    private func refreshBattery() {
         UIDevice.current.isBatteryMonitoringEnabled = true
         let level = UIDevice.current.batteryLevel
         batteryPercentText = level >= 0 ? "\(Int(level * 100))%" : "--%"
@@ -485,84 +633,83 @@ struct StandbyView: View {
     }
 
     private func loadPhotos(from items: [PhotosPickerItem]) async {
-        var loadedPhotos: [UIImage] = []
+        var loaded: [UIImage] = []
         for item in items {
             guard let data = try? await item.loadTransferable(type: Data.self),
                   let image = UIImage(data: data) else {
                 continue
             }
-            loadedPhotos.append(image)
+            loaded.append(image)
         }
 
         await MainActor.run {
-            selectedPhotos = loadedPhotos
+            selectedPhotos = loaded
             currentPhotoIndex = 0
         }
     }
 
-    private func widgetCard(title: String, content: String, subtitle: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(title.uppercased())
-                .font(.system(size: 12, weight: .bold, design: .rounded))
-                .foregroundColor(.white.opacity(0.65))
-            Spacer()
-            Text(content)
-                .font(.system(size: 34, weight: .bold, design: .rounded))
-                .monospacedDigit()
-                .foregroundColor(selectedTheme.secondary)
-                .minimumScaleFactor(0.5)
-                .lineLimit(1)
-            Text(subtitle)
-                .font(.system(size: 14, weight: .medium, design: .rounded))
-                .foregroundColor(.white.opacity(0.74))
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.white.opacity(0.08))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .stroke(selectedTheme.primary.opacity(0.35), lineWidth: 1)
-        )
-    }
-
-    private func statusPill(text: String) -> some View {
-        Text(text)
-            .font(.system(size: 14, weight: .semibold, design: .rounded))
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(selectedTheme.primary.opacity(0.24))
-            .foregroundColor(selectedTheme.secondary)
-            .clipShape(Capsule())
-    }
-
-    private func timeString(from date: Date) -> String {
+    private func timeString(from date: Date, seconds: Bool) -> String {
         let formatter = DateFormatter()
         formatter.locale = .current
-        formatter.dateFormat = use24HourClock ? (showSeconds ? "HH:mm:ss" : "HH:mm") : (showSeconds ? "h:mm:ss" : "h:mm")
+        formatter.dateFormat = use24HourClock
+            ? (seconds ? "HH:mm:ss" : "HH:mm")
+            : (seconds ? "h:mm:ss" : "h:mm")
         return formatter.string(from: date)
     }
 
-    private func dateString(from date: Date) -> String {
+    private func hourString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = use24HourClock ? "HH" : "h"
+        return formatter.string(from: date)
+    }
+
+    private func minuteString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "mm"
+        return formatter.string(from: date)
+    }
+
+    private func secondString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "ss"
+        return formatter.string(from: date)
+    }
+
+    private func meridiem(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "a"
+        return formatter.string(from: date)
+    }
+
+    private func dateLongString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = .current
         formatter.dateFormat = "EEEE, MMMM d"
         return formatter.string(from: date)
     }
 
-    private func weekdayString(from date: Date) -> String {
+    private func weekdayName(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = .current
         formatter.dateFormat = "EEEE"
         return formatter.string(from: date)
     }
 
-    private func dateShortString(from date: Date) -> String {
+    private func monthHeader(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = .current
-        formatter.dateFormat = "MMM d"
+        formatter.dateFormat = "MMMM"
+        return formatter.string(from: date).uppercased()
+    }
+
+    private func dayNumber(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "d"
         return formatter.string(from: date)
     }
 }
